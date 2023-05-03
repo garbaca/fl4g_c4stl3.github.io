@@ -1,6 +1,7 @@
 Mở challenge và chạy instance, ta có file encrypt.py.
 Chạy instance,ta nhận được số leaked bit.PowerAnalysis: Warmup
 Đọc kỹ file encrypt.py, nhận ra số leaked bit này là số bit trong của Sbox[key^plaintext], với plaintext là 1 dãy hex 16 byte (32 ký tự) và key cũng 16 byte (và cũng là flag p tìm). 
+
 Lưu ý, Sbox[a^b] = Sbox[c] (c=a^b) là giá trị ở dòng chứa ký tự thứ nhất và cột chứa ký tự thứ 2. Chẳng hạn, Sbox[a^b]=Sbox[6c] thì dò trong bảng Sbox tìm giá trị ở dòng 6 cột 12 (c=12) (đếm cột và dòng từ 1 nhé!)
 Bây giờ, đến lúc triệu hồi ma pháp và tưởng tượng nào. Hãy hình dung, khi ta chọn plaintext="00000000000000000000000000000000", thì giá trị trả về cũng chính là số các byte mà LSB(Sbox[byte[i]]) = 1, i chạy từ 1 đến 16 nhé (LSB là least significant bit, vd '0001' thì LSB=1, còn '010' thì LSB=0)
 Hãy đếm byte từ trái qua phải, tử 1 đến 16, mỗi byte chứa 2 ký tự hexa (ký tự hexa là từ 0 đến f).
