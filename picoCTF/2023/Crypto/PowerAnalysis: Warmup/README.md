@@ -29,9 +29,13 @@ Lưu ý vì sao bt là N-1 hay N+1 là do ta chỉ xét sự thay đổi của s
 Các byte còn lại xét y chang.
 
 Do đó: Hãy xét từng byte 1, mỗi byte xor chừng tổi thiểu 17 plaintext trở lên, muốn an toàn thì 50 cũng đc. Xét byte nào, thì plaintext được xor p thay đổi giá trị tương ứng ở byte đó mà th,các  byte còn lại phải giữ giá trị "00" nhé.
+
 VD: key ^ "00000000000000000000000000000000" ra số leaked bit = 6
+
 Xét byte đầu tiên, sinh bộ plaintext = {"xx000000000000000000000000000000"}, với xx thay đổi từ 00->13 (giả dụ h t thích check vs 20 plaintext đi ha)
+
 Mỗi lần nhập plaintext vào nhận được số leaked bit, push số đó vào 1 mảng leakbits chẳng hạn
+
 Sau 20 vòng lặp giả sử ta có mảng sau:
 leakedbits=[6,7,6,6,7,6,7,....]
 
@@ -39,6 +43,7 @@ Ok h thấy leakedbits[1]=7>N r ha, tức là số leaked bit bị tăng lên, h
 
 Và khi xor để có mảng leakedbits xong, ta cho vòng lặp i chạy từ 0 tới 255, mỗi vòng i có 1 vòng j chạy từ 0 tới 19, để sinh ra một mảng test cũng lưu các leaked bit. NHƯNG lưu ý, mảng test này chỉ có giá trị là 0 và 1 th nhé, 0 là có LSB=0 và ngược lại. Do đó ta p đổi mảng leakedbits về thành 0 vs 1 dựa trên LSB[byte[1]] ban đầu là 1 hay 0 (đang xét vd ở byte 1 nhé, mk thích đếm byte từ 1 :v) 
 Ở trường hợp trên leakedbit có 7>N nên LSB(byte[1]) bđ là bằng 0 nhé, nên chỗ nào trong mảng leakedbits = N thì gán là 0, ngược lại là 1
+
 Còn vd h leakedbits như sau: [6,5,6,6,5,6,5,....], do 5<N=6 nên tức là LSB(byte[1])=1, do đó chỗ nào trong mảng leakedbits = N thì gán là 1, ngược lại là 0 :v
 
 Sửa xong leakedbits r ms chạy for i từ 0 tới 255, trong mỗi vòng for có vòng j từ 0 tới 19, để tạo ra mảng test có 20 phần tử, bằng số phần tử của mảng leakedbits.
